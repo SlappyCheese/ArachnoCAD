@@ -27,7 +27,8 @@ $form.FormBorderStyle = "FixedDialog"
 $form.MaximizeBox =$false
 
 $panelLeft = New-Object System.Windows.Forms.Panel
-$panelLeft.Size = New-Object System.Drawing.Size(400, 730)$panelLeft.Location = New-Object System.Drawing.Point(10, 10)
+$panelLeft.Size = New-Object System.Drawing.Size(400, 730)
+$panelLeft.Location = New-Object System.Drawing.Point(10, 10)
 $form.Controls.Add($panelLeft)
 
 # --- Shape Selector ---
@@ -39,7 +40,8 @@ $panelLeft.Controls.Add($lblShape)
 
 $cmbShape = New-Object System.Windows.Forms.ComboBox
 $cmbShape.Location = New-Object System.Drawing.Point(130, 10)
-$cmbShape.Size = New-Object System.Drawing.Size(260, 25)$cmbShape.DropDownStyle = "DropDownList"
+$cmbShape.Size = New-Object System.Drawing.Size(260, 25)
+$cmbShape.DropDownStyle = "DropDownList"
 $cmbShape.Items.Add("Circular (Center Hub)") | Out-Null
 $cmbShape.Items.Add("Triangular (Corner/Porch)") | Out-Null
 $cmbShape.SelectedIndex = 0
@@ -49,7 +51,8 @@ $panelLeft.Controls.Add($cmbShape)
 $lblMeasureTip = New-Object System.Windows.Forms.Label
 $lblMeasureTip.Text = "📐 HOW TO MEASURE: Set your web size 15-20% SMALLER than the physical gap between your anchor points. You need this extra space to tie your outer tension lines!"
 $lblMeasureTip.Location = New-Object System.Drawing.Point(10, 45)
-$lblMeasureTip.Size = New-Object System.Drawing.Size(380, 40)$lblMeasureTip.ForeColor = [System.
+$lblMeasureTip.Size = New-Object System.Drawing.Size(380, 40)
+$lblMeasureTip.ForeColor = [System.
 ($w * 1.15, 1)
         
         $outerLength = [math]::Round([math]::Sqrt(($w/2)*($w/2) + $h*$h), 1)
