@@ -6,34 +6,31 @@ A Windows PowerShell GUI tool for calculating rope lengths, generating visual la
 
 ---
 
-## Features
+## ✨ Features
 
-✨ **Dual Shape Support**
-- **Circular (Center Hub)**: Radial spokes with concentric rings
-- **Triangular (Corner/Porch)**: Perfect for anchoring to porch corners or triangular spaces
+- **Dual Shape Support**: Circular (Center Hub) or Triangular (Corner/Porch) designs
+- **Real-Time Preview**: Visual canvas updates as you adjust parameters
+- **Intelligent Calculations**: Auto-calculates rope lengths with 20% safety margin
+- **Cut Sheet Export**: Generates printable HTML with measurements and assembly guide
+- **Share Codes**: Hex-encoded design strings for easy sharing (e.g., `W-A5C3F`)
+- **Clove Hitch Guide**: Built-in SVG diagram for proper knot tying
+- **Responsive UI**: Sliders and numeric inputs with validation
 
-📏 **Intelligent Calculations**
-- Auto-calculates exact rope lengths for all components
-- Includes 20% safety margin for knot tying and adjustments
-- Recommends anchor gap size based on web dimensions
-- Real-time visual preview as you adjust parameters
+---
 
-📋 **Cut Sheet Export**
-- Generates printable HTML documents with:
-  - Itemized cut list (exact lengths + safety margin)
-  - Visual web layout preview
-  - Assembly instructions
-  - Clove hitch knot guide with SVG diagram
+## Screenshots
 
-🔗 **Share Codes**
-- Hex-encoded configuration strings (e.g., `W-A5C3F`)
-- Copy and share web designs with others
-- Automatically decode shared codes back to parameters
+### Circular Web Design
+![Circular Web Preview](https://via.placeholder.com/600x400?text=Circular+Web+Design)
+*Real-time preview of a circular web with concentric rings and radial spokes*
 
-🎨 **Visual Tools**
-- Real-time on-canvas preview
-- Supports custom spoke counts and ring/weave spacing
-- Professional layout rendering with measurements
+### Triangular Web Design
+![Triangular Web Preview](https://via.placeholder.com/600x400?text=Triangular+Web+Design)
+*Corner/porch-style triangular web with horizontal weave lines*
+
+### HTML Export - Cut Sheet
+![HTML Cut Sheet Export](https://via.placeholder.com/600x400?text=HTML+Cut+Sheet)
+*Printable cut sheet with itemized rope list and assembly instructions*
 
 ---
 
@@ -176,6 +173,7 @@ The application features a split-panel design:
 - HTML export with embedded image support
 - UI scaling and responsive design
 - Integrated clove hitch knot guide
+- Fixed mobile copy-paste artifacts
 
 ### v1.1.0
 - Initial release with circular web support
