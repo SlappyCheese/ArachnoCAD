@@ -15,7 +15,7 @@ A Windows PowerShell GUI tool for calculating rope lengths, generating visual la
 - **Intelligent Calculations**: Auto-calculates rope lengths with 20% safety margin
 - **Cut Sheet Export**: Generates printable HTML with measurements and assembly guide
 - **Share Codes**: Hex-encoded design strings for easy sharing (e.g., `W-A5C3F`)
-- **Clove Hitch Guide**: Built-in SVG diagram for proper knot tying
+- **Clove Hitch Guide**: Built-in SVG diagram for proper knot tying (the HTML version just links to wikipedia for more clarity)
 - **Responsive UI**: Sliders and numeric inputs with validation
 
 ---
