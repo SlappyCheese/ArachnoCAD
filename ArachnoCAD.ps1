@@ -9,7 +9,7 @@
     complete with Hex-encoded share codes and integrated assembly instructions.
 
 .VERSION
-    1.2.0 - Added shape selection, hex-encoding, image export, and UI scaling.
+    1.2.1 - Added robust error handling, input validation, and resource cleanup.
 #>
 
 Add-Type -AssemblyName System.Windows.Forms
@@ -21,7 +21,7 @@ Add-Type -AssemblyName System.Drawing
 # 1. MAIN FORM SETUP & BRANDING
 # ==============================================================================
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "ArachnoCAD v1.2.0 - Spider Web Planner"
+$form.Text = "ArachnoCAD v1.2.1 - Spider Web Planner"
 $form.Size = New-Object System.Drawing.Size(950, 800)
 $form.StartPosition = "CenterScreen"
 $form.FormBorderStyle = "FixedDialog"

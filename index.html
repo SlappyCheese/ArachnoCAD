@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArachnoCAD v1.2.1 - Spider Web Planner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-top: 10px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .left-panel {
+            padding: 30px;
+            border-right: 1px solid #e0e0e0;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+
+        .right-panel {
+            padding: 30px;
+            background: #fafafa;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+
+        .control-group {
+            margin-bottom: 30px;
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-size: 0.95em;
+        }
+
+        .control-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        input[type="number"] {
+            width: 100px;
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 6px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        select {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            background: white;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .info-box {
+            background: #fffbee;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        canvas {
+            width: 100%;
+            height: 280px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            margin-bottom: 20px;
+        }
+
+        .share-code-section {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .share-code-section label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .share-code-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            margin-bottom: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .share-code-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .copy-btn {
+            width: 100%;
+            padding: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #5568d3;
+        }
+
+        .export-btn {
+            width: 100%;
+            padding: 12px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .export-btn:hover {
+            background: #229954;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
+        thead {
+            background: #34495e;
+            color: white;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:hover {
+            background: #f5f5f5;
+        }
+
+        .total-row {
+            font-weight: bold;
+            background: #ecf0f1;
+        }
+
+        .knot-guide {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .knot-guide h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .knot-guide ol {
+            margin-left: 20px;
+        }
+
+        .knot-guide li {
+            margin-bottom: 8px;
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .grid-header {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        footer {
+            background: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .left-panel {
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        .responsive-notice {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .responsive-notice {
+                display: block;
+            }
+
+            body {
+                padding: 10px;
+            }
+
+            .left-panel, .right-panel {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.5em;
+            }
+
+            input[type="number"] {
+                width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🕷️ ArachnoCAD</h1>
+            <p>Spider Web Construction Planner & Cut Sheet Generator</p>
+            <div class="version-badge">v1.2.1</div>
+        </header>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="responsive-notice">
+                    💡 For best experience, view on desktop
+                </div>
+
+                <div class="control-group">
+                    <label for="shapeSelect">Web Shape</label>
+                    <select id="shapeSelect">
+                        <option value="0">Circular (Center Hub)</option>
+                        <option value="1">Triangular (Corner/Porch)</option>
+                    </select>
+                </div>
+
+                <div class="info-box">
+                    HOW TO MEASURE: Set your web size 15-20% SMALLER than the physical gap between your anchor points. You need this extra space to tie your outer tension lines!
+                </div>
+
+                <div class="control-group">
+                    <label for="diameter">Web Diameter (ft)</label>
+                    <div class="control-row">
+                        <input type="number" id="diameter" min="5" max="40" value="20" step="1">
+                        <input type="range" id="diameterSlider" min="5" max="40" value="20">
+                    </div>
+                </div>
+
+                <div class="control-group" id="heightGroup" style="display: none;">
+                    <label for="height">Web Height (ft)</label>
+                    <div class="control-row">
+                        <input type="number" id="height" min="5" max="40" value="20" step="1">
+                        <input type="range" id="heightSlider" min="5" max="40" value="20">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="spacing">Ring Spacing (ft)</label>
+                    <div class="control-row">
+                        <input type="number" id="spacing" min="1" max="3" value="1.5" step="0.1">
+                        <input type="range" id="spacingSlider" min="10" max="30" value="15">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="spokes" id="spokesLabel">Radial Spokes</label>
+                    <div class="control-row">
+                        <input type="number" id="spokes" min="3" max="15" value="8" step="1">
+                        <input type="range" id="spokesSlider" min="3" max="15" value="8">
+                    </div>
+                </div>
+
+                <div class="share-code-section">
+                    <label>Share Code</label>
+                    <input type="text" id="shareCode" class="share-code-input" readonly>
+                    <button class="copy-btn" onclick="copyShareCode()">Copy to Clipboard</button>
+                </div>
+
+                <div class="success-message" id="successMsg">✓ Copied to clipboard!</div>
+                <div class="error-message" id="errorMsg"></div>
+
+                <button class="export-btn" onclick="exportHTML()">Download Cut Sheet (HTML)</button>
+            </div>
+
+            <div class="right-panel">
+                <h2 style="margin-bottom: 15px; color: #2c3e50;">Visual Preview</h2>
+                <canvas id="canvas" width="500" height="280"></canvas>
+
+                <div class="grid-header">Itemized Cut Sheet</div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Qty</th>
+                                <th>Exact (ft)</th>
+                                <th>Cut +20% (ft)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gridBody">
+                            <tr>
+                                <td colspan="4" style="text-align: center; color: #999;">No data</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="knot-guide">
+                    <h3>Assembly Knot: The Clove Hitch</h3>
+                    <strong>Why:</strong> Grips the main structural lines tightly under tension, preventing sags. Allows you to slide and fine-tune spacing before locking.
+                    <ol>
+                        <li>Wrap the working end of the ring line over and around the spoke</li>
+                        <li>Cross back over the first wrap to form an "X"</li>
+                        <li>Pass the cord around the spoke one more time and tuck it underneath the "X"</li>
+                        <li>Pull both ends tightly to lock</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>ArachnoCAD v1.2.1 | <a href="https://github.com/SlappyCheese/ArachnoCAD" target="_blank">View on GitHub</a> | Built with ❤️ for arachnid decorators</p>
+        </footer>
+    </div>
+
+    <script>
+        // =====================================================================
+        // State & Constants
+        // =====================================================================
+        let isUpdating = false;
+        let recommendedGap = "";
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // =====================================================================
+        // HEX ENCODING/DECODING (matching PowerShell version)
+        // =====================================================================
+        function encodeShareCode() {
+            const isTri = parseInt(document.getElementById('shapeSelect').value);
+            const dia = parseInt(document.getElementById('diameter').value);
+            const height = parseInt(document.getElementById('height').value);
+            const space = Math.round(parseFloat(document.getElementById('spacing').value) * 10);
+            const spokes = parseInt(document.getElementById('spokes').value);
+
+            // Bit packing: [21]=shape, [20:17]=spokes, [16:12]=spacing*10, [11:6]=height, [5:0]=dia
+            const packed = (isTri << 21) | (spokes << 17) | (space << 12) | (height << 6) | dia;
+            return "W-" + packed.toString(16).toUpperCase();
+        }
+
+        function decodeShareCode(code) {
+            const match = code.toUpperCase().match(/^W-([0-9A-F]+)$/);
+            if (!match) return null;
+
+            try {
+                const packed = parseInt(match[1], 16);
+                const dia = packed & 0x3F;
+                const height = (packed >> 6) & 0x3F;
+                const space = ((packed >> 12) & 0x1F) / 10.0;
+                const spokes = (packed >> 17) & 0x0F;
+                const shape = (packed >> 21) & 0x01;
+
+                return { dia, height, space, spokes, shape };
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // =====================================================================
+        // GEOMETRY & CALCULATIONS
+        // =====================================================================
+        function calculateCutSheet() {
+            const isTri = parseInt(document.getElementById('shapeSelect').value);
+            const dia = parseFloat(document.getElementById('diameter').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const space = parseFloat(document.getElementById('spacing').value);
+            const spokes = parseInt(document.getElementById('spokes').value);
+
+            // Input validation
+            if (dia <= 0 || height <= 0 || space <= 0 || spokes < 3) {
+                document.getElementById('gridBody').innerHTML = '<tr><td colspan="4" style="color: red;">Invalid input values</td></tr>';
+                return;
+            }
+
+            const rows = [];
+            let totalExact = 0;
+            let totalCut = 0;
+
+            if (!isTri) {
+                // Circular
+                recommendedGap = (dia * 1.2).toFixed(1);
+                const radius = dia / 2.0;
+
+                if (spokes % 2 === 0) {
+                    const lines = spokes / 2;
+                    const diaCut = (dia * 1.2).toFixed(1);
+                    rows.push(['Full Diameter Lines', lines, dia.toFixed(1), diaCut]);
+                    totalExact += dia * lines;
+                    totalCut += parseFloat(diaCut) * lines;
+                } else {
+                    const lines = Math.floor(spokes / 2);
+                    const diaCut = (dia * 1.2).toFixed(1);
+                    rows.push(['Full Diameter Lines', lines, dia.toFixed(1), diaCut]);
+                    totalExact += dia * lines;
+                    totalCut += parseFloat(diaCut) * lines;
+
+                    const radCut = (radius * 1.2).toFixed(1);
+                    rows.push(['Half Line (Radius)', 1, radius.toFixed(1), radCut]);
+                    totalExact += radius;
+                    totalCut += parseFloat(radCut);
+                }
+
+                const ringCount = Math.floor(radius / space);
+                for (let i = 1; i <= ringCount; i++) {
+                    const ringRadius = i * space;
+                    const ringExact = (2 * Math.PI * ringRadius).toFixed(1);
+                    const ringCut = (parseFloat(ringExact) * 1.2).toFixed(1);
+                    rows.push([`Ring ${i}`, 1, ringExact, ringCut]);
+                    totalExact += parseFloat(ringExact);
+                    totalCut += parseFloat(ringCut);
+                }
+            } else {
+                // Triangular
+                recommendedGap = (dia * 1.15).toFixed(1);
+                const w = dia;
+                const h = height;
+
+                const outerLength = Math.sqrt((w/2)*(w/2) + h*h).toFixed(1);
+                const outerCut = (parseFloat(outerLength) * 1.2).toFixed(1);
+                rows.push(['Outer Edge Lines', 2, outerLength, outerCut]);
+                totalExact += parseFloat(outerLength) * 2;
+                totalCut += parseFloat(outerCut) * 2;
+
+                if (spokes > 2) {
+                    const innerSpokes = spokes - 2;
+                    for (let i = 1; i <= innerSpokes; i++) {
+                        const xDist = -(w/2) + (i * (w / (spokes - 1)));
+                        const innerLength = Math.sqrt(xDist*xDist + h*h).toFixed(1);
+                        const innerCut = (parseFloat(innerLength) * 1.2).toFixed(1);
+                        rows.push([`Inner Spoke ${i}`, 1, innerLength, innerCut]);
+                        totalExact += parseFloat(innerLength);
+                        totalCut += parseFloat(innerCut);
+                    }
+                }
+
+                const weaveCount = Math.floor(h / space);
+                for (let j = 1; j <= weaveCount; j++) {
+                    const distFromTop = j * space;
+                    const weaveLength = (w * (distFromTop / h)).toFixed(1);
+                    const weaveCut = (parseFloat(weaveLength) * 1.2).toFixed(1);
+                    rows.push([`Horizontal Weave ${j}`, 1, weaveLength, weaveCut]);
+                    totalExact += parseFloat(weaveLength);
+                    totalCut += parseFloat(weaveCut);
+                }
+            }
+
+            // Render grid
+            let html = '';
+            rows.forEach(row => {
+                html += `<tr><td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td></tr>`;
+            });
+            html += `<tr class="total-row"><td>TOTAL ROPE</td><td>--</td><td>${totalExact.toFixed(1)}</td><td>${totalCut.toFixed(1)}</td></tr>`;
+            document.getElementById('gridBody').innerHTML = html;
+
+            return rows;
+        }
+
+        // =====================================================================
+        // CANVAS RENDERING
+        // =====================================================================
+        function drawPreview() {
+            const isTri = parseInt(document.getElementById('shapeSelect').value);
+            const dia = parseFloat(document.getElementById('diameter').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const space = parseFloat(document.getElementById('spacing').value);
+            const spokes = parseInt(document.getElementById('spokes').value);
+
+            const w = canvas.width;
+            const h = canvas.height;
+            const cx = w / 2;
+            const cy = h / 2;
+            const padding = 20;
+
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.strokeStyle = '#2c3e50';
+            ctx.lineWidth = 2;
+
+            if (!isTri) {
+                // Circular
+                const radius = dia / 2.0;
+                const maxPix = Math.min(cx, cy) - padding;
+                const scale = radius > 0 ? maxPix / radius : 1;
+                const r_px = radius * scale;
+
+                for (let i = 0; i < spokes; i++) {
+                    const angle = i * (360 / spokes);
+                    const radAngle = angle * Math.PI / 180;
+                    const x = cx + r_px * Math.cos(radAngle);
+                    const y = cy + r_px * Math.sin(radAngle);
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+                }
+
+                ctx.strokeStyle = '#3498db';
+                const ringCount = Math.floor(radius / space);
+                for (let i = 1; i <= ringCount; i++) {
+                    const ringR_px = (i * space) * scale;
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, ringR_px, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+
+                // Labels
+                ctx.fillStyle = 'rgba(210, 255, 255, 0.8)';
+                ctx.fillRect(5, 5, 210, 75);
+                ctx.fillStyle = '#000';
+                ctx.font = 'bold 10px Consolas';
+                ctx.fillText(`Diameter: ${dia} ft`, 10, 22);
+                ctx.fillText(`Anchor Gap: ~${recommendedGap} ft`, 10, 37);
+                ctx.fillText(`Spacing: ${space} ft`, 10, 52);
+            } else {
+                // Triangular
+                const w_px = w - (padding * 2);
+                const h_px = h - (padding * 2);
+                const scaleX = w_px / dia;
+                const scaleY = h_px / height;
+                const scale = Math.min(scaleX, scaleY);
+
+                const apexX = cx;
+                const apexY = cy - ((height / 2) * scale);
+                const baseY = apexY + (height * scale);
+                const baseLeftX = cx - ((dia / 2) * scale);
+                const baseRightX = cx + ((dia / 2) * scale);
+
+                ctx.strokeStyle = '#2c3e50';
+                for (let i = 0; i < spokes; i++) {
+                    const xPos = baseLeftX + (i * ((dia * scale) / (spokes - 1)));
+                    ctx.beginPath();
+                    ctx.moveTo(apexX, apexY);
+                    ctx.lineTo(xPos, baseY);
+                    ctx.stroke();
+                }
+
+                ctx.strokeStyle = '#3498db';
+                const weaveCount = Math.floor(height / space);
+                for (let j = 1; j <= weaveCount; j++) {
+                    const distFromTopPx = (j * space) * scale;
+                    const currentY = apexY + distFromTopPx;
+                    const currentW = (dia * scale) * ((j * space) / height);
+                    const leftX = cx - (currentW / 2);
+                    const rightX = cx + (currentW / 2);
+                    ctx.beginPath();
+                    ctx.moveTo(leftX, currentY);
+                    ctx.lineTo(rightX, currentY);
+                    ctx.stroke();
+                }
+
+                // Labels
+                ctx.fillStyle = 'rgba(210, 255, 255, 0.8)';
+                ctx.fillRect(5, 5, 210, 75);
+                ctx.fillStyle = '#000';
+                ctx.font = 'bold 10px Consolas';
+                ctx.fillText(`Base: ${dia} ft (Gap: ~${recommendedGap} ft)`, 10, 22);
+                ctx.fillText(`Height: ${height} ft`, 10, 37);
+                ctx.fillText(`Spacing: ${space} ft`, 10, 52);
+            }
+        }
+
+        // =====================================================================
+        // EVENT HANDLERS & UPDATES
+        // =====================================================================
+        function updateUI() {
+            if (isUpdating) return;
+            isUpdating = true;
+
+            try {
+                const isTri = parseInt(document.getElementById('shapeSelect').value);
+                
+                // Update visibility and labels
+                const heightGroup = document.getElementById('heightGroup');
+                const spokesLabel = document.getElementById('spokesLabel');
+                const diameterLabel = document.querySelector('label[for="diameter"]');
+                
+                if (isTri) {
+                    heightGroup.style.display = 'block';
+                    diameterLabel.textContent = 'Base Width (ft)';
+                    spokesLabel.textContent = 'Total Vertical Spokes';
+                } else {
+                    heightGroup.style.display = 'none';
+                    diameterLabel.textContent = 'Web Diameter (ft)';
+                    spokesLabel.textContent = 'Radial Spokes';
+                }
+
+                // Sync number inputs with sliders
+                document.getElementById('diameter').value = document.getElementById('diameterSlider').value;
+                document.getElementById('height').value = document.getElementById('heightSlider').value;
+                document.getElementById('spacing').value = (document.getElementById('spacingSlider').value / 10).toFixed(1);
+                document.getElementById('spokes').value = document.getElementById('spokesSlider').value;
+
+                // Update calculations
+                calculateCutSheet();
+                drawPreview();
+                document.getElementById('shareCode').value = encodeShareCode();
+            } finally {
+                isUpdating = false;
+            }
+        }
+
+        // Event listeners for inputs
+        document.getElementById('shapeSelect').addEventListener('change', updateUI);
+        document.getElementById('diameter').addEventListener('change', () => {
+            document.getElementById('diameterSlider').value = document.getElementById('diameter').value;
+            updateUI();
+        });
+        document.getElementById('diameterSlider').addEventListener('input', () => {
+            document.getElementById('diameter').value = document.getElementById('diameterSlider').value;
+            updateUI();
+        });
+
+        document.getElementById('height').addEventListener('change', () => {
+            document.getElementById('heightSlider').value = document.getElementById('height').value;
+            updateUI();
+        });
+        document.getElementById('heightSlider').addEventListener('input', () => {
+            document.getElementById('height').value = document.getElementById('heightSlider').value;
+            updateUI();
+        });
+
+        document.getElementById('spacing').addEventListener('change', () => {
+            document.getElementById('spacingSlider').value = (document.getElementById('spacing').value * 10).toFixed(0);
+            updateUI();
+        });
+        document.getElementById('spacingSlider').addEventListener('input', () => {
+            document.getElementById('spacing').value = (document.getElementById('spacingSlider').value / 10).toFixed(1);
+            updateUI();
+        });
+
+        document.getElementById('spokes').addEventListener('change', () => {
+            document.getElementById('spokesSlider').value = document.getElementById('spokes').value;
+            updateUI();
+        });
+        document.getElementById('spokesSlider').addEventListener('input', () => {
+            document.getElementById('spokes').value = document.getElementById('spokesSlider').value;
+            updateUI();
+        });
+
+        // Share code load
+        document.getElementById('shareCode').addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                const code = document.getElementById('shareCode').value.trim();
+                const decoded = decodeShareCode(code);
+                if (decoded) {
+                    isUpdating = true;
+                    document.getElementById('shapeSelect').value = decoded.shape;
+                    document.getElementById('diameter').value = decoded.dia;
+                    document.getElementById('diameterSlider').value = decoded.dia;
+                    document.getElementById('height').value = decoded.height;
+                    document.getElementById('heightSlider').value = decoded.height;
+                    document.getElementById('spacing').value = decoded.space.toFixed(1);
+                    document.getElementById('spacingSlider').value = Math.round(decoded.space * 10);
+                    document.getElementById('spokes').value = decoded.spokes;
+                    document.getElementById('spokesSlider').value = decoded.spokes;
+                    isUpdating = false;
+                    updateUI();
+                    showMessage('Share code loaded!', 'success');
+                } else {
+                    showMessage('Invalid share code format', 'error');
+                }
+            }
+        });
+
+        // =====================================================================
+        // UTILITY FUNCTIONS
+        // =====================================================================
+        function showMessage(text, type) {
+            const successMsg = document.getElementById('successMsg');
+            const errorMsg = document.getElementById('errorMsg');
+            if (type === 'success') {
+                successMsg.textContent = '✓ ' + text;
+                successMsg.style.display = 'block';
+                errorMsg.style.display = 'none';
+                setTimeout(() => successMsg.style.display = 'none', 3000);
+            } else {
+                errorMsg.textContent = '⚠ ' + text;
+                errorMsg.style.display = 'block';
+                successMsg.style.display = 'none';
+            }
+        }
+
+        function copyShareCode() {
+            const code = document.getElementById('shareCode').value;
+            navigator.clipboard.writeText(code).then(() => {
+                showMessage('Share code copied!', 'success');
+            }).catch(() => {
+                showMessage('Failed to copy', 'error');
+            });
+        }
+
+        function exportHTML() {
+            try {
+                const isTri = parseInt(document.getElementById('shapeSelect').value);
+                const dia = parseFloat(document.getElementById('diameter').value);
+                const height = parseFloat(document.getElementById('height').value);
+                const space = parseFloat(document.getElementById('spacing').value);
+                const spokes = parseInt(document.getElementById('spokes').value);
+
+                // Generate canvas image
+                const imgData = canvas.toDataURL('image/png');
+
+                // Build table
+                let tableHtml = '';
+                document.getElementById('gridBody').querySelectorAll('tr').forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length > 0) {
+                        const isTotal = row.classList.contains('total-row');
+                        const style = isTotal ? "style='font-weight:bold; background-color:#ecf0f1;'" : '';
+                        tableHtml += `<tr ${style}>`;
+                        cells.forEach(cell => tableHtml += `<td>${cell.textContent}</td>`);
+                        tableHtml += '</tr>';
+                    }
+                });
+
+                const specs = isTri
+                    ? `${dia} ft Base x ${height} ft Height | ${space} ft Spacing | ${spokes} Spokes`
+                    : `${dia} ft Diameter | ${space} ft Ring Spacing | ${spokes} Spokes`;
+
+                const htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+    <title>ArachnoCAD Cut Sheet</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; line-height: 1.4; max-width: 1000px; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
+        .version { font-size: 14px; color: #7f8c8d; font-weight: normal; margin-left: 10px; }
+        .config-box { background: #f4f4f4; padding: 10px; border-radius: 5px; font-weight: bold; font-family: monospace; display: inline-block; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #34495e; color: white; }
+        .preview { margin: 20px 0; text-align: center; }
+        .preview img { max-width: 500px; border: 1px solid #ddd; }
+        @media print { button { display: none; } }
+    </style>
+</head>
+<body>
+    <button onclick="window.print()" style="float:right; padding: 10px 20px; font-size: 14px; cursor:pointer; background-color: #3498db; color: white; border: none; border-radius: 5px;">Print Plan</button>
+    <h1>ArachnoCAD Cut Sheet<span class="version">v1.2.1</span></h1>
+    <p><strong>Share Code:</strong> <span class="config-box">${document.getElementById('shareCode').value}</span></p>
+    <p><strong>Specifications:</strong> ${specs}</p>
+    <p><strong>Recommended Anchor Gap:</strong> ~ ${recommendedGap} ft</p>
+
+    <div class="preview">
+        <h2>Visual Plan</h2>
+        <img src="${imgData}" alt="Web Preview" />
+    </div>
+
+    <h2>Itemized Cut Sheet</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Qty</th>
+                <th>Exact Length</th>
+                <th>Cut Length (+20%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${tableHtml}
+        </tbody>
+    </table>
+
+    <h2>Assembly Instructions</h2>
+    <ol>
+        <li><strong>Anchor the Frame:</strong> Secure your main structural lines tightly across your space.</li>
+        <li><strong>Set the Spokes:</strong> Tie the remaining radial lines to the center hub or apex.</li>
+        <li><strong>Weave the Spiral/Rings:</strong> Start from the center and work outward, tying a clove hitch at every intersection.</li>
+        <li><strong>Final Tension:</strong> Once fully woven, pull your anchor lines tighter to lock the whole structure in place.</li>
+    </ol>
+</body>
+</html>`;
+
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                const now = new Date();
+                const timestamp = now.getFullYear() + 
+                                 String(now.getMonth() + 1).padStart(2, '0') + 
+                                 String(now.getDate()).padStart(2, '0') + '_' +
+                                 String(now.getHours()).padStart(2, '0') +
+                                 String(now.getMinutes()).padStart(2, '0') +
+                                 String(now.getSeconds()).padStart(2, '0');
+                a.href = url;
+                a.download = `ArachnoCAD_CutSheet_${timestamp}.html`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showMessage('Cut sheet exported!', 'success');
+            } catch (e) {
+                showMessage('Export failed: ' + e.message, 'error');
+            }
+        }
+
+        // Initialize
+        updateUI();
+    </script>
+</body>
+</html>
