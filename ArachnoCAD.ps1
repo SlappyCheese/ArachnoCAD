@@ -22,13 +22,13 @@ Add-Type -AssemblyName System.Drawing
 # ==============================================================================
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "ArachnoCAD v1.2.1 - Spider Web Planner"
-$form.Size = New-Object System.Drawing.Size(950, 800)
+$form.Size = New-Object System.Drawing.Size(950, 830)
 $form.StartPosition = "CenterScreen"
 $form.FormBorderStyle = "FixedDialog"
 $form.MaximizeBox = $false
 
 $panelLeft = New-Object System.Windows.Forms.Panel
-$panelLeft.Size = New-Object System.Drawing.Size(400, 730)
+$panelLeft.Size = New-Object System.Drawing.Size(400, 790)
 $panelLeft.Location = New-Object System.Drawing.Point(10, 10)
 $form.Controls.Add($panelLeft)
 
@@ -141,11 +141,23 @@ $btnPrint.Size = New-Object System.Drawing.Size(380, 35)
 $btnPrint.BackColor = [System.Drawing.Color]::LightSteelBlue
 $panelLeft.Controls.Add($btnPrint)
 
+# --- GitHub Link Button ---
+$btnGithub = New-Object System.Windows.Forms.Button
+$btnGithub.Text = "📚 View on GitHub"
+$btnGithub.Location = New-Object System.Drawing.Point(10, 720)
+$btnGithub.Size = New-Object System.Drawing.Size(380, 30)
+$btnGithub.BackColor = [System.Drawing.Color]::LightGray
+$btnGithub.Font = New-Object System.Drawing.Font($form.Font, [System.Drawing.FontStyle]::Italic)
+$btnGithub.Add_Click({
+    Start-Process "https://github.com/SlappyCheese/ArachnoCAD"
+})
+$panelLeft.Controls.Add($btnGithub)
+
 # ==============================================================================
 # 4. DATAGRID: ITEMIZATION TABLE
 # ==============================================================================
 $grid = New-Object System.Windows.Forms.DataGridView
-$grid.Size = New-Object System.Drawing.Size(500, 715)
+$grid.Size = New-Object System.Drawing.Size(500, 775)
 $grid.Location = New-Object System.Drawing.Point(420, 10)
 $grid.AllowUserToAddRows = $false
 $grid.ReadOnly = $true
@@ -453,92 +465,95 @@ $btnPrint.add_Click({
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ArachnoCAD Build Plan</title>
+    <title>ArachnoCAD Cut Sheet</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 30px; line-height: 1.4; max-width: 1000px; }
-        h1 { color: #2c3e50; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
-        .version { font-size: 14px; color: #7f8c8d; font-weight: normal; margin-left: 10px; }
-        .config-box { background: #f4f4f4; padding: 10px; border-radius: 5px; font-weight: bold; font-family: monospace; display: inline-block; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #34495e; color: white; }
-        .knot-section { margin-top: 30px; background: #fafafa; padding: 20px; border-left: 5px solid #3498db; display: flex; align-items: center; gap: 30px; page-break-inside: avoid; }
-        .knot-text { flex: 1; }
-        .knot-img { max-width: 150px; }
-        .layout-grid { display: flex; gap: 30px; margin-top: 20px; }
-        .column { flex: 1; }
-        .preview-img { width: 100%; max-width: 400px; border: 1px solid #ccc; border-radius: 5px; display: block; margin: 0 auto 15px auto; }
-        .assembly-box { background: #eef2f5; padding: 15px; border-radius: 5px; }
-        .assembly-box ol { margin: 0; padding-left: 20px; }
-        .assembly-box li { margin-bottom: 8px; }
-        @media print { button { display: none; } }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; line-height: 1.3; font-size: 13px; }
+        .page { page-break-after: always; padding: 0.5in; min-height: 10.5in; }
+        .page:last-child { page-break-after: avoid; }
+        h1 { color: #2c3e50; font-size: 18px; margin-bottom: 8px; border-bottom: 2px solid #2c3e50; padding-bottom: 5px; }
+        h2 { color: #34495e; font-size: 14px; margin: 12px 0 8px 0; }
+        p { margin: 4px 0; font-size: 12px; }
+        .version { font-size: 11px; color: #7f8c8d; font-weight: normal; }
+        .config-box { background: #f4f4f4; padding: 4px 8px; border-radius: 3px; font-weight: bold; font-family: monospace; display: inline-block; font-size: 11px; }
+        table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+        th, td { border: 1px solid #999; padding: 6px; text-align: left; }
+        th { background-color: #34495e; color: white; font-weight: bold; }
+        .preview { margin: 8px 0; text-align: center; }
+        .preview img { max-width: 100%; max-height: 200px; border: 1px solid #ccc; }
+        .footer-link { text-align: center; margin-top: 10px; font-size: 11px; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul { margin-left: 20px; font-size: 12px; }
+        ol { margin-left: 20px; font-size: 12px; }
+        li { margin-bottom: 4px; }
+        @media print { 
+            body { margin: 0; padding: 0; }
+            .page { padding: 0.4in; page-break-after: always; margin: 0; }
+            .no-print { display: none; }
+            button { display: none; }
+        }
     </style>
 </head>
 <body>
-    <button onclick="window.print()" style="float:right; padding: 10px 20px; font-size: 14px; cursor:pointer; background-color: #3498db; color: white; border: none; border-radius: 5px;">Print Plan</button>
-    <h1>ArachnoCAD Construction Plan<span class="version">v1.2.0</span></h1>
-    <p><strong>Share Code:</strong> <span class="config-box">$($txtCfg.Text)</span></p>
-    <p><strong>Specifications:</strong> $specs</p>
-    <p><strong>Recommended Anchor Gap:</strong> ~ $($global:recommendedGap) ft (Allows room for tension lines)</p>
-
-    <div class="layout-grid">
-        <div class="column">
-            <h2>Itemized Cut Sheet</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Component</th>
-                        <th>Qty</th>
-                        <th>Exact Length</th>
-                        <th>Cut Length (+20%)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    $tableHtml
-                </tbody>
-            </table>
-        </div>
+    <div class="page">
+        <button onclick="window.print()" style="float:right; padding: 6px 12px; font-size: 12px; cursor:pointer; background-color: #3498db; color: white; border: none; border-radius: 3px; margin-bottom: 10px;" class="no-print">Print Plan</button>
         
-        <div class="column">
-            <h2>Visual Plan</h2>
-            <img src="$imgSrc" class="preview-img" alt="Web Preview" />
-            
-            <div class="assembly-box">
-                <h3 style="margin-top: 0;">Assembly Order</h3>
-                <ol>
-                    <li><strong>Anchor the Frame:</strong> Secure your main structural lines (the cross or outer triangle) tightly across your space.</li>
-                    <li><strong>Set the Spokes:</strong> Tie the remaining radial lines to the center hub or apex.</li>
-                    <li><strong>Weave the Spiral/Rings:</strong> Start from the center and work outward, tying a clove hitch at every intersection. Keep the cord slightly loose so the web has a natural sag.</li>
-                    <li><strong>Final Tension:</strong> Once fully woven, pull your master anchor lines tighter to lock the whole structure in place.</li>
-                </ol>
-            </div>
+        <h1>🕷️ ArachnoCAD Cut Sheet<span class="version">v1.2.1</span></h1>
+        
+        <p><strong>Share Code:</strong> <span class="config-box">$($txtCfg.Text)</span></p>
+        <p><strong>Specs:</strong> $specs</p>
+        <p><strong>Recommended Gap:</strong> ~ $($global:recommendedGap) ft</p>
+
+        <div class="preview">
+            <img src="$imgSrc" alt="Web Preview" />
         </div>
+
+        <h2>Cut Sheet</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Qty</th>
+                    <th>Length (ft)</th>
+                    <th>+20% (ft)</th>
+                </tr>
+            </thead>
+            <tbody>
+                $tableHtml
+            </tbody>
+        </table>
     </div>
 
-    <div class="knot-section">
-        <div class="knot-text">
-            <h2 style="margin-top: 0;">Assembly Knot: The Clove Hitch</h2>
-            <ul style="padding-left: 20px;">
-                <li><strong>Why:</strong> It grips the main structural lines tightly under tension, preventing sags, but allows you to slide the knot along the spoke to fine-tune spacing before locking it in.</li>
-                <li><strong>How to tie:</strong>
-                    <ol>
-                        <li>Wrap the working end of the ring line over and around the spoke.</li>
-                        <li>Cross back over the first wrap to form an "X".</li>
-                        <li>Pass the cord around the spoke one more time and tuck it underneath the middle of the "X".</li>
-                        <li>Pull both ends tightly to lock.</li>
-                    </ol>
-                </li>
-            </ul>
-        </div>
-        <!-- Embedded SVG Knot drawing for offline support -->
-        <svg class="knot-img" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <rect x="40" y="5" width="20" height="90" rx="3" fill="#cbd5e1" stroke="#94a3b8" stroke-width="2"/>
-            <path d="M 15 70 Q 50 90 85 70" fill="none" stroke="#f97316" stroke-width="9" stroke-linecap="round"/>
-            <path d="M 15 70 C 20 40 80 40 85 40" fill="none" stroke="#ea580c" stroke-width="9" stroke-linecap="round"/>
-            <path d="M 15 30 C 20 60 80 60 85 70" fill="none" stroke="#f97316" stroke-width="9" stroke-linecap="round"/>
-            <path d="M 15 30 Q 50 10 85 30" fill="none" stroke="#ea580c" stroke-width="9" stroke-linecap="round"/>
-            <path d="M 85 40 Q 60 45 40 50" fill="none" stroke="#c2410c" stroke-width="9" stroke-linecap="round"/>
-        </svg>
+    <div class="page">
+        <h1>Assembly Instructions</h1>
+        
+        <h2>What You'll Need</h2>
+        <ul>
+            <li>Rope (see cut sheet on page 1)</li>
+            <li>Anchor points (trees, posts, corners)</li>
+            <li>Rope wrench or similar tool</li>
+        </ul>
+
+        <h2>Step-by-Step</h2>
+        <ol>
+            <li><strong>Anchor the Frame:</strong> Secure main structural lines across your space.</li>
+            <li><strong>Set the Spokes:</strong> Tie radial lines to center hub or apex.</li>
+            <li><strong>Weave the Rings:</strong> Start center, work outward. Use clove hitches at each intersection.</li>
+            <li><strong>Final Tension:</strong> Pull anchor lines tight to lock the structure.</li>
+        </ol>
+
+        <h2>The Clove Hitch Knot</h2>
+        <ol>
+            <li>Wrap rope over and around the spoke</li>
+            <li>Cross back to form an "X"</li>
+            <li>Wrap around one more time, tuck under the X</li>
+            <li>Pull both ends tight to lock</li>
+        </ol>
+        
+        <p style="margin-top: 20px; text-align: center; font-size: 11px; color: #666;">
+            <a href="https://github.com/SlappyCheese/ArachnoCAD" target="_blank">github.com/SlappyCheese/ArachnoCAD</a>
+        </p>
     </div>
 </body>
 </html>
