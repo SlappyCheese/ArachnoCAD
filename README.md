@@ -4,6 +4,10 @@
 
 A Windows PowerShell GUI tool for calculating rope lengths, generating visual layouts, and exporting printable cut sheets for giant outdoor spider web decorations. Perfect for Halloween haunts, themed events, or any décor project requiring precise web geometry.
 
+I'm providing a poweshell version for easier tweaking and a full AI generated HTML version for ease of use for non-tweakers.
+I'll try to keep all the features the same between them.
+
+
 🌐 **[View the interactive HTML version →](https://slappycheese.github.io/ArachnoCAD/)**
 
 ---
@@ -235,7 +239,7 @@ This project is provided as-is for personal and non-commercial use.
 
 ## Contributing
 
-Found a bug or have a feature idea? Feel free to open an issue or submit a pull request!
+Found a bug (Good! hahahhaha) or have a feature idea? Feel free to open an issue or submit a pull request!
 
 ---
 
